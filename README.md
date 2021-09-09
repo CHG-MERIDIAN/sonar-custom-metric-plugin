@@ -10,12 +10,12 @@ This plugin will allow to add custom metrics project to let quality gate checkin
 
 ## Building
 - Clone this repository
-- Run `.\gradlew build`
-- `sonar-custom-metric-plugin-*.*.jar` is written to `.\build\libs`
+- Run `./gradle build` or `.\gradlew build` on Windows
+- Find `sonar-custom-metric-plugin-*.*.jar` in `./build/libs`
 
 ## Installing
-Copy the built `sonar-custom-metric-plugin-*.*.jar` plugin to SonarQube server plugin directory in `<SonarQube home>/extensions/plugins/`.
-Restart the SonarQube server
+Copy the built `sonar-custom-metric-plugin-*.*.jar` plugin to SonarQube server plugin directory in `<SonarQubeHome>/extensions/plugins/`.
+Restart the SonarQube process.
 
 **SonarQube on Docker**
 If you are using [Docker compose file](https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md), copy the plugin to the container volume:
@@ -26,13 +26,65 @@ docker cp sonar-customer-metric-plugin-0.1.jar sonarqube_sonarqube_1:/opt/sonarq
 docker-compose restart
 ```
 
-## Custom metric file format
-The custom metric we define need to be written down somewhere in the project. The file will have a CSV format
+## Defining metrics
 
-```csv
-metricId,value
-myMetricInt1,1
-myMetricStr2,good
+The metrics have to be defined so that SonarQube can interpret them. This has to be done in `.\src\main\java\jp\co\atware\sonar\custommetric\CustomMetrics.java`.
+
+This file contains more information on how to define these metrics.
+
+_Example:_
+
+```java
+
+	static final List<Metric> METRICS = Arrays.asList(
+
+		new Metric.Builder(
+            "MemoryUsage", "Memory usage", Metric.ValueType.INT)
+            .setDirection(Metric.DIRECTION_WORST)
+            .setQualitative(true)
+            .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
+            .create(),
+
+		new Metric.Builder(
+            "MemoryUsagePercent", "Memory usage (in percent)", Metric.ValueType.FLOAT)
+            .setDirection(Metric.DIRECTION_WORST)
+            .setQualitative(true)
+            .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
+            .create(),	
+
+		new Metric.Builder(
+            "Status", "Api status response", Metric.ValueType.STRING)
+            .setDirection(Metric.DIRECTION_NONE)
+            .setQualitative(true)
+            .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
+            .create(),	
+
+	);
 ```
 
-the `metricId` should be defined in this plugin. `value` could be various from _int_, _double_ to _string_. It will be parsed depend on the value type of metric we defined in this plugin.
+Changing metric definitions requires a new version of the plugin, installing it and restarting the SonarQube process.
+
+## Writing custom metrics
+Now that we defined the custom metrics, we have to collect and write the according values during the build and/or test process.
+These values need to be written into a file in the project file structure. This file uses a `metricId,value` format.
+
+_Example:_
+```csv
+MemoryUsage,380
+MemoryUsagePercent,0.34
+Status,OK
+```
+
+The values can be various from _int_, _double_ to _string_, depending on the metric definitions in the plugin (see above).
+
+## Transferring custom metrics
+Once the metrics file is written, its relative path needs to be transferred to the SonarQube server.
+Use the variable name `custom.metrics.reportFilePath`
+
+_Example:_
+```
+begin
+  /d:sonar.host.url="..."
+  /d:custom.metrics.reportFilePath="./custom-sonar-metrics.csv"
+  ...
+```

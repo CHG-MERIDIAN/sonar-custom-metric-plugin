@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'jp.co.atware'
-version '0.1'
+version '1.1'
 
 sourceCompatibility = 1.8
 
@@ -37,6 +37,6 @@ dependencies {
 sonarPackaging {
     pluginKey = "custommetrics"
     pluginClass = "jp.co.atware.sonar.custommetric.CustomMetricPlugin"
-    pluginName = "Custom Metric Plugin"
-    pluginDescription = "Add custom metric for Sonar"
+    pluginName = "Custom Metrics"
+    pluginDescription = "Custom SonarQube metrics"
 }
