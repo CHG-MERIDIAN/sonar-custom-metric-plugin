@@ -4,20 +4,20 @@
 ![Bug](https://sonarcloud.io/api/project_badges/measure?project=jp.co.atware%3Asonar-custom-metric-plugin&metric=bugs)
 
 
-This is a custom plugin for [Sonarqube](https://www.sonarqube.org/) - Continuous code quality inspection tool.
+This is a custom plugin for [SonarQube](https://www.sonarqube.org/) - Continuous code quality inspection tool.
 
 This plugin will allow to add custom metrics project to let quality gate checking for it.
 
 ## Building
-- Clonse this repository
+- Clone this repository
 - Run `.\gradlew build`
-- Jar file is written to `.\build\libs`
+- `sonar-custom-metric-plugin-*.*.jar` is written to `.\build\libs`
 
 ## Installing
-Copy the built Jar plugin to Sonarqube server plugin directory in `<Sonarqube home>/extensions/plugins/`.
-Restart the Sonarqube server
+Copy the built `sonar-custom-metric-plugin-*.*.jar` plugin to SonarQube server plugin directory in `<SonarQube home>/extensions/plugins/`.
+Restart the SonarQube server
 
-**Sonarqube on Docker**
+**SonarQube on Docker**
 If you are using [Docker compose file](https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md), copy the plugin to the container volume:
 
 ```bash
