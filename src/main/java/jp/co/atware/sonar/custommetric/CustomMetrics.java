@@ -45,25 +45,33 @@ public class CustomMetrics implements Metrics {
 	static final List<Metric> METRICS = Arrays.asList(
 
 		new Metric.Builder(
-            "MemoryUsage", "Memory usage", Metric.ValueType.INT)
+            "SystemTestStartMemory", "System test start memory usage", Metric.ValueType.FLOAT)
             .setDirection(Metric.DIRECTION_WORST)
             .setQualitative(true)
             .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
             .create(),
 
 		new Metric.Builder(
-            "MemoryUsagePercent", "Memory usage (in percent)", Metric.ValueType.FLOAT)
+            "SystemTestStopMemory", "System test stop memory usage", Metric.ValueType.FLOAT)
             .setDirection(Metric.DIRECTION_WORST)
             .setQualitative(true)
             .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
             .create(),	
 
 		new Metric.Builder(
-            "Status", "Api status response", Metric.ValueType.STRING)
-            .setDirection(Metric.DIRECTION_NONE)
+            "SystemTestMemoryDifference", "System test memory difference", Metric.ValueType.FLOAT)
+            .setDirection(Metric.DIRECTION_WORST)
+            .setQualitative(true)
+            .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
+            .create(),	
+
+		new Metric.Builder(
+            "SystemTestDurationMilliseconds", "System test duration", Metric.ValueType.MILLISEC)
+            .setDirection(Metric.DIRECTION_WORST)
             .setQualitative(true)
             .setDomain(CoreMetrics.DOMAIN_RELIABILITY)
             .create()
+			
 	);
 
 	@Override
