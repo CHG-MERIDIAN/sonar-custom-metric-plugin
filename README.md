@@ -8,7 +8,12 @@ This is a custom plugin for [Sonarqube](https://www.sonarqube.org/) - Continuous
 
 This plugin will allow to add custom metrics project to let quality gate checking for it.
 
-## Install plugin
+## Building
+- Clonse this repository
+- Run `.\gradlew build`
+- Jar file is written to `.\build\libs`
+
+## Installing
 Copy the built Jar plugin to Sonarqube server plugin directory in `<Sonarqube home>/extensions/plugins/`.
 Restart the Sonarqube server
 
